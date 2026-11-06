@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Suvrojeet Paul — cybersecurity intern, secure full-stack developer, and computer science researcher.">
+    <meta name="theme-color" content="#070707">
+    <title>Suvrojeet Paul — Secure systems, thoughtful software</title>
+    <style>
+        :root {
+            --bg: #070707;
+            --panel: #0e0e0e;
+            --panel-strong: #141414;
+            --fg: #f1efe9;
+            --mute: #9c9b96;
+            --dim: #696863;
+            --line: #262626;
+            --accent: #ff5e00;
+            --cyan: #3be8ff;
+            --lime: #c6ff3b;
+            --max: 1180px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; background: var(--bg); }
+        body {
+            position: relative;
+            isolation: isolate;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            line-height: 1.55;
+            overflow-x: hidden;
+        }
+        #aurora-bg {
+            position: fixed;
+            z-index: -4;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: .46;
+        }
+        body::before {
+            position: fixed;
+            z-index: -3;
+            inset: 0;
+            background: transparent;
+            content: "";
+            pointer-events: none;
+        }
+        body::after {
+            position: fixed;
+            z-index: -2;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+            background-size: 64px 64px;
+            mask-image: linear-gradient(to bottom, #000, transparent 78%);
+            content: "";
+            pointer-events: none;
+        }
+        .ambient {
+            position: fixed;
+            z-index: -1;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .ambient::before, .ambient::after {
+            position: absolute;
+            width: 42vw;
+            height: 42vw;
+            border: 1px solid rgba(255,94,0,.12);
+            border-radius: 50%;
+            content: "";
+            transform: translate(-50%, -50%);
+            animation: orbit 18s linear infinite;
+        }
+        .ambient::before { top: 20%; left: 9%; box-shadow: 0 0 90px rgba(255,94,0,.08), inset 0 0 90px rgba(255,94,0,.04); }
+        .ambient::after { top: 70%; left: 91%; width: 30vw; height: 30vw; border-color: rgba(59,232,255,.12); animation-direction: reverse; animation-duration: 24s; }
+        .network {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: .48;
+        }
+        .network path, .network line {
+            fill: none;
+            stroke: rgba(59,232,255,.18);
+            stroke-width: .8;
+            stroke-dasharray: 4 14;
+            animation: network-flow 11s linear infinite;
+        }
+        .network line:nth-child(2n) { stroke: rgba(255,94,0,.2); animation-duration: 15s; }
+        .network circle {
+            fill: var(--bg);
+            stroke: var(--cyan);
+            stroke-width: 1;
+            filter: drop-shadow(0 0 8px rgba(59,232,255,.7));
+            animation: node-pulse 3.5s ease-in-out infinite;
+        }
+        .network circle:nth-of-type(2n) { stroke: var(--accent); animation-delay: -1.7s; }
+        .cursor-light {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 300px;
+            border: 1px solid rgba(59,232,255,.18);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59,232,255,.12), rgba(59,232,255,.025) 35%, transparent 68%);
+            box-shadow: 0 0 70px rgba(59,232,255,.08);
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            transition: opacity .4s ease;
+        }
+        .cursor-light::before, .cursor-light::after {
+            position: absolute;
+            background: var(--cyan);
+            box-shadow: 0 0 12px var(--cyan);
+            content: "";
+        }
+        .cursor-light::before { top: 50%; left: -12px; width: 24px; height: 1px; }
+        .cursor-light::after { top: -12px; left: 50%; width: 1px; height: 24px; }
+        @keyframes orbit { to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes network-flow { to { stroke-dashoffset: -120; } }
+        @keyframes node-pulse { 50% { opacity: .45; transform: scale(.72); } }
+        a { color: inherit; }
+        a:focus-visible, button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
+        .wrap { width: min(var(--max), calc(100% - 48px)); margin: 0 auto; }
+        .eyebrow {
+            color: var(--accent);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+        }
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+            background: rgba(7,7,7,.86);
+            backdrop-filter: blur(14px);
+        }
+        .site-header .wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 68px;
+            gap: 24px;
+        }
+        .brand { color: var(--fg); font-size: 15px; font-weight: 800; text-decoration: none; letter-spacing: .06em; }
+        .brand span { color: var(--accent); }
+        nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 22px; color: var(--mute); font-size: 12px; }
+        nav a { text-decoration: none; transition: color .2s ease; }
+        nav a:hover { color: var(--accent); }
+        .hero { min-height: min(820px, calc(100vh - 68px)); display: grid; align-items: center; padding: 110px 0 100px; }
+        .hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr); gap: 80px; align-items: end; }
+        .hero-name { display: flex; align-items: center; gap: clamp(16px, 2.5vw, 34px); }
+        .tech-wordmark { position: relative; width: min(100%, 900px); margin: 20px 0 26px; }
+        .tech-wordmark canvas { display: block; width: 100%; height: clamp(78px, 11vw, 142px); }
+        .tech-wordmark h1 {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            white-space: nowrap;
+        }
+        .profile-photo { width: clamp(78px, 10vw, 132px); height: clamp(78px, 10vw, 132px); flex: 0 0 auto; border: 1px solid var(--accent); border-radius: 50%; object-fit: cover; object-position: 52% 28%; filter: saturate(.86) contrast(1.05); box-shadow: 10px 10px 0 rgba(255,94,0,.14); transition: transform .45s ease, filter .45s ease; }
+        .profile-photo:hover { filter: saturate(1.08) contrast(1.05); transform: translateY(-5px) rotate(2deg); }
+        .hero-copy { max-width: 620px; color: var(--mute); font-size: clamp(16px, 2vw, 20px); }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+        .button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 17px;
+            border: 1px solid var(--line);
+            background: var(--panel);
+            color: var(--fg);
+            font: inherit;
+            font-size: 12px;
+            text-decoration: none;
+            transition: border-color .2s ease, color .2s ease, background .2s ease;
+        }
+        .button:hover { border-color: var(--accent); color: var(--accent); }
+        .button.primary { border-color: var(--accent); background: var(--accent); color: #080808; font-weight: 800; }
+        .button.primary:hover { background: transparent; color: var(--accent); }
+        .hero-meta { border-left: 1px solid var(--accent); padding-left: 22px; color: var(--mute); font-size: 12px; }
+        .hero-meta strong { display: block; margin-bottom: 10px; color: var(--fg); font-size: 18px; }
+        .hero-meta p + p { margin-top: 18px; }
+        section { padding: 105px 0; border-top: 1px solid var(--line); }
+        .section-head { display: grid; grid-template-columns: 220px 1fr; gap: 36px; margin-bottom: 48px; }
+        h2 { max-width: 780px; font-size: clamp(34px, 5vw, 72px); line-height: .96; letter-spacing: -.06em; text-transform: uppercase; }
+        .section-intro { max-width: 620px; color: var(--mute); font-size: 15px; }
+        .about-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 18px; }
+        .panel { padding: 28px; border: 1px solid var(--line); background: var(--panel); }
+        .panel, .project, .skill, .cert, .research-point, .timeline-item {
+            background:
+                linear-gradient(135deg, rgba(255,255,255,.035), transparent 38%),
+                var(--panel);
+        }
+        .panel p + p { margin-top: 18px; }
+        .panel p { color: var(--mute); }
+        .stat-list { display: grid; gap: 1px; background: var(--line); }
+        .stat { display: flex; justify-content: space-between; gap: 20px; padding: 18px; background: var(--panel); font-size: 13px; }
+        .stat span { color: var(--dim); }
+        .stat strong { color: var(--fg); text-align: right; }
+        .skill-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); }
+        .skill { min-height: 190px; padding: 23px; background: var(--panel); }
+        .skill-no { color: var(--accent); font-size: 12px; }
+        .skill h3 { margin: 32px 0 12px; font-size: 16px; }
+        .skill p { color: var(--mute); font-size: 12px; }
+        .project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+        .project { display: flex; min-height: 260px; flex-direction: column; justify-content: space-between; padding: 28px; border: 1px solid var(--line); background: var(--panel); transition: border-color .25s ease, transform .25s ease; }
+        .project:hover { border-color: var(--accent); transform: translateY(-4px); }
+        .project-top { display: flex; justify-content: space-between; gap: 18px; color: var(--dim); font-size: 12px; }
+        .project h3 { max-width: 18ch; margin: 45px 0 14px; font-size: clamp(22px, 3vw, 34px); line-height: 1; letter-spacing: -.05em; }
+        .project p { max-width: 58ch; color: var(--mute); font-size: 13px; }
+        .project-tag { color: var(--cyan); }
+        .research { display: grid; grid-template-columns: .8fr 1.2fr; gap: 18px; }
+        .research-main { min-height: 340px; padding: 34px; background: var(--accent); color: #080808; }
+        .research-main .eyebrow { color: #080808; }
+        .research-main h3 { max-width: 12ch; margin: 56px 0 18px; font-size: clamp(30px, 5vw, 60px); line-height: .93; letter-spacing: -.07em; text-transform: uppercase; }
+        .research-main p { max-width: 48ch; font-size: 13px; }
+        .research-focus { display: grid; gap: 14px; margin-top: 24px; }
+        .research-focus article { padding-top: 13px; border-top: 1px solid rgba(8,8,8,.35); }
+        .research-focus strong { display: block; margin-bottom: 5px; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+        .research-focus p { font-size: 12px; line-height: 1.45; }
+        .research-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 28px; background: rgba(8,8,8,.28); }
+        .research-meta div { padding: 12px; background: rgba(255,255,255,.14); font-size: 10px; }
+        .research-meta span { display: block; margin-bottom: 5px; opacity: .65; text-transform: uppercase; }
+        .research-meta strong { font-size: 11px; }
+        .research-points { display: grid; gap: 1px; background: var(--line); }
+        .research-point { padding: 25px; background: var(--panel); }
+        .research-point strong { display: block; margin-bottom: 8px; color: var(--cyan); font-size: 13px; }
+        .research-point p { color: var(--mute); font-size: 13px; }
+        .media-carousel {
+            position: relative;
+            overflow: hidden;
+            padding: 18px 0 30px;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            isolation: isolate;
+            mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+        }
+        .media-carousel::before, .media-carousel::after {
+            position: absolute;
+            z-index: 2;
+            top: 0;
+            bottom: 0;
+            width: clamp(54px, 10vw, 150px);
+            content: "";
+            pointer-events: none;
+        }
+        .media-carousel::before {
+            left: 0;
+            background: linear-gradient(90deg, rgba(7,7,7,.98), rgba(7,7,7,.55) 42%, transparent);
+            backdrop-filter: blur(7px);
+        }
+        .media-carousel::after {
+            right: 0;
+            background: linear-gradient(270deg, rgba(7,7,7,.98), rgba(7,7,7,.55) 42%, transparent);
+            backdrop-filter: blur(7px);
+        }
+        .media-track {
+            display: flex;
+            width: max-content;
+            gap: 18px;
+            animation: media-flow 34s linear infinite;
+        }
+        .media-group { display: flex; flex: 0 0 auto; gap: 18px; }
+        .media-carousel:hover .media-track, .media-carousel:focus-within .media-track { animation-play-state: paused; }
+        .media-card {
+            position: relative;
+            flex: 0 0 clamp(230px, 25vw, 330px);
+            height: clamp(290px, 34vw, 430px);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.16);
+            border-radius: 3px;
+            background: var(--panel);
+            box-shadow: 0 16px 35px rgba(0,0,0,.24);
+            transform: translateZ(0);
+        }
+        .media-card img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: saturate(.82) contrast(1.04);
+            transition: transform .8s cubic-bezier(.2,.7,.2,1), filter .5s ease;
+        }
+        .media-card::after {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 34%, rgba(5,5,5,.92));
+            content: "";
+            pointer-events: none;
+        }
+        .media-card:hover img, .media-card:focus-within img { filter: saturate(1.12) contrast(1.05); transform: scale(1.045); }
+        .media-card:focus-within { border-color: var(--cyan); }
+        .media-caption { position: absolute; z-index: 1; right: 16px; bottom: 16px; left: 16px; }
+        .media-caption .eyebrow { margin-bottom: 8px; }
+        .media-caption h3 { max-width: 16ch; font-size: clamp(18px, 2.4vw, 28px); line-height: .98; letter-spacing: -.06em; text-transform: uppercase; }
+        .media-caption p { max-width: 34ch; margin-top: 8px; color: #c4c4bf; font-size: 11px; }
+        .media-index { position: absolute; z-index: 2; top: 14px; right: 14px; color: #fff; font-size: 11px; }
+        @keyframes media-flow {
+            to { transform: translateX(calc(-50% - 9px)); }
+        }
+        .timeline { display: grid; gap: 1px; background: var(--line); }
+        .timeline-item { display: grid; grid-template-columns: 220px 1fr; gap: 28px; padding: 26px; background: var(--panel); }
+        .timeline-label { color: var(--accent); font-size: 12px; }
+        .timeline-item h3 { margin-bottom: 7px; font-size: 20px; }
+        .timeline-item p { color: var(--mute); font-size: 13px; }
+        .cert-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); }
+        .cert { min-height: 135px; padding: 22px; background: var(--panel); }
+        .cert-number { color: var(--accent); font-size: 11px; }
+        .cert h3 { margin-top: 25px; font-size: 15px; line-height: 1.2; }
+        .cert p { margin-top: 6px; color: var(--dim); font-size: 12px; }
+        .contact { padding-bottom: 70px; }
+        .contact-box { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; padding: 38px; border: 1px solid var(--accent); background: linear-gradient(120deg, rgba(255,94,0,.12), transparent 55%); }
+        .contact-box h2 { margin-top: 18px; }
+        .contact-links { display: grid; gap: 10px; min-width: 240px; color: var(--mute); font-size: 13px; }
+        .contact-links a { text-decoration: none; }
+        .contact-links a:hover { color: var(--cyan); }
+        footer { padding: 28px 0 40px; border-top: 1px solid var(--line); color: var(--dim); font-size: 11px; }
+        footer .wrap { display: flex; justify-content: space-between; gap: 20px; }
+        @media (max-width: 850px) {
+            .hero-grid, .about-grid, .research { grid-template-columns: 1fr; }
+            .media-track { gap: 14px; }
+            .media-card { flex-basis: min(72vw, 300px); }
+            .skill-grid { grid-template-columns: repeat(2, 1fr); }
+            .section-head { grid-template-columns: 1fr; gap: 18px; }
+            .contact-box { align-items: flex-start; flex-direction: column; }
+        }
+        @media (max-width: 620px) {
+            .wrap { width: min(var(--max), calc(100% - 32px)); }
+            nav { display: none; }
+            .hero { padding: 80px 0; }
+            .hero-name { align-items: flex-start; gap: 14px; }
+            .tech-wordmark canvas { height: 78px; }
+            .profile-photo { width: 72px; height: 72px; margin-top: 20px; }
+            section { padding: 76px 0; }
+            .project-grid, .cert-grid { grid-template-columns: 1fr; }
+            .media-card { flex-basis: 76vw; height: 360px; }
+            .skill-grid { grid-template-columns: 1fr 1fr; }
+            .timeline-item { grid-template-columns: 1fr; gap: 10px; }
+            .contact-box { padding: 24px; }
+            footer .wrap { align-items: flex-start; flex-direction: column; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation: none !important; }
+            .cursor-light { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="aurora-bg" aria-hidden="true"></canvas>
+    <div class="ambient" aria-hidden="true">
+        <svg class="network" viewBox="0 0 1200 800" preserveAspectRatio="none">
+            <path d="M-40 170 C170 30 260 290 470 150 S760 90 860 220 S1080 330 1240 120"/>
+            <path d="M-40 610 C160 500 260 700 430 560 S710 420 850 590 S1080 710 1240 520"/>
+            <line x1="120" y1="0" x2="430" y2="800"/>
+            <line x1="760" y1="0" x2="620" y2="800"/>
+            <line x1="1040" y1="0" x2="880" y2="800"/>
+            <circle cx="120" cy="170" r="4"/>
+            <circle cx="470" cy="150" r="4"/>
+            <circle cx="860" cy="220" r="4"/>
+            <circle cx="260" cy="610" r="4"/>
+            <circle cx="850" cy="590" r="4"/>
+            <circle cx="1040" cy="520" r="4"/>
+        </svg>
+        <div class="cursor-light"></div>
+    </div>
+    <header class="site-header">
+        <div class="wrap">
+            <a class="brand" href="#top">SP<span>/</span>26</a>
+            <nav aria-label="Primary navigation">
+                <a href="#about">about</a>
+                <a href="#skills">skills</a>
+                <a href="#work">work</a>
+                <a href="#research">research</a>
+                <a href="#media">media</a>
+                <a href="#contact">contact</a>
+            </nav>
+            <a class="button" href="./resume-suvrojeetpaul.pdf" download>resume ↓</a>
+        </div>
+    </header>
+
+    <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="wrap hero-grid">
+                <div>
+                    <p class="eyebrow">01 / identity // cyber security // creative technology</p>
+                    <div class="hero-name">
+                        <div class="tech-wordmark" data-wordmark="SUVROJEET PAUL">
+                            <canvas aria-hidden="true"></canvas>
+                            <h1 id="hero-title">Suvrojeet Paul</h1>
+                        </div>
+                        <img class="profile-photo" src="./media/suvrojeet-profile.jpg" alt="Portrait of Suvrojeet Paul" width="132" height="132">
+                    </div>
+                    <p class="hero-copy">Cybersecurity enthusiast, advanced graphic and web developer building scalable digital ecosystems where secure backend logic meets intuitive human experiences and polished visual communication.</p>
+                    <div class="hero-actions">
+                        <a class="button primary" href="#work">Explore selected work →</a>
+                        <a class="button" href="mailto:paulsuvrojeet@gmail.com">Start a conversation ↗</a>
+                    </div>
+                </div>
+                <div class="hero-meta" data-cs="words">
+                    <strong>Currently focused on</strong>
+                    <p>Graphic design, responsive web experiences, blockchain intelligence, crypto-fraud attribution, hybrid GNN-RAG threat analysis, hardware security, and secure full-stack development.</p>
+                    <p>Kolkata, West Bengal, India<br>Available for meaningful technical work.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" aria-labelledby="about-title">
+            <div class="wrap">
+                <div class="section-head">
+                    <p class="eyebrow">02 / profile</p>
+                    <div>
+                        <h2 id="about-title">Curious by nature. Precise by practice.</h2>
+                        <p class="section-intro">A highly motivated Computer Science &amp; Engineering undergraduate specializing in secure systems, full-stack development, cybersecurity research, and intelligent threat analysis.</p>
+                    </div>
+                </div>
+                <div class="about-grid">
+                    <article class="panel" data-cs="words">
+                        <p>I am passionate about building scalable digital ecosystems that combine secure backend logic, intuitive user experiences, and strong visual direction. As an advanced graphic and web developer, I turn ideas into clear interfaces, branded visuals, responsive pages, and meaningful digital experiences.</p>
+                        <p>From investigating cryptographic hardware vulnerabilities to tracing suspicious cryptocurrency wallets and researching evidence-grounded cyber-threat attribution, I approach each problem with a research mindset and a builder's discipline.</p>
+                    </article>
+                    <div class="stat-list">
+                        <div class="stat"><span>discipline</span><strong>Computer Science &amp; Engineering</strong></div>
+                        <div class="stat"><span>specialization</span><strong>Networks</strong></div>
+                        <div class="stat"><span>academic result</span><strong>CGPA 9.21</strong></div>
+                        <div class="stat"><span>base</span><strong>Kolkata, India</strong></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" aria-labelledby="skills-title">
+            <div class="wrap">
+                <div class="section-head">
+                    <p class="eyebrow">03 / toolkit</p>
+                    <div>
+                        <h2 id="skills-title">The tools behind the work.</h2>
+                        <p class="section-intro">A practical mix of programming, systems security, blockchain analysis, AI research, web development, graphic design, and communication tools.</p>
+                    </div>
+                </div>
+                <div class="skill-grid">
+                    <article class="skill"><span class="skill-no">A / 01</span><h3>Programming &amp; tools</h3><p>Python · Java · C · SQL · Git · Linux · R Studio · Excel</p></article>
+                    <article class="skill"><span class="skill-no">A / 02</span><h3>Cybersecurity &amp; hardware</h3><p>Network Security · Side-Channel Analysis · Vulnerability Mapping · Secure Coding · Cryptographic Vulnerabilities</p></article>
+                    <article class="skill"><span class="skill-no">A / 03</span><h3>AI &amp; data science</h3><p>Machine Learning · Artificial Intelligence · Edge AI · Data Analysis · Data Extraction · Data Manipulation · Data Cleaning</p></article>
+                    <article class="skill"><span class="skill-no">A / 04</span><h3>Graphic design studio</h3><p>Canva · Adobe Photoshop · Figma · Adobe Illustrator · visual identity · presentation design · social media creatives</p></article>
+                    <article class="skill"><span class="skill-no">A / 05</span><h3>Web &amp; interface design</h3><p>HTML · CSS · JavaScript · responsive layouts · UI/UX systems · prototyping · interaction design · accessibility</p></article>
+                </div>
+            </div>
+        </section>
+
+        <section id="work" aria-labelledby="work-title">
+            <div class="wrap">
+                <div class="section-head">
+                    <p class="eyebrow">04 / selected work</p>
+                    <div>
+                        <h2 id="work-title">Systems with a reason to exist.</h2>
+                        <p class="section-intro">Projects spanning fraud detection, medical imaging, academic productivity, connected safety hardware, blockchain intelligence, and cyber-threat attribution.</p>
+                    </div>
+                </div>
+                <div class="project-grid">
+                    <article class="project" data-cs="frame">
+                        <div class="project-top"><span class="project-tag">machine learning</span><span>01</span></div>
+                        <div><h3>Neural Fraud Detection Engine</h3><p>An anomaly-detection framework for identifying suspicious financial transactions through machine-learning models and real-time behavioral analysis.</p></div>
+                    </article>
+                    <article class="project" data-cs="frame">
+                        <div class="project-top"><span class="project-tag">medical AI</span><span>02</span></div>
+                        <div><h3>Microsoft InnerEye Architecture Implementation</h3><p>Recreated architectural concepts inspired by Microsoft's InnerEye system for medical imaging analysis and machine-learning-driven clinical support.</p></div>
+                    </article>
+                    <article class="project" data-cs="frame">
+                        <div class="project-top"><span class="project-tag">productivity systems</span><span>03</span></div>
+                        <div><h3>TimeSync: Intelligent Academic Scheduler</h3><p>An academic productivity platform designed to optimize task scheduling, resource allocation, and student workflow efficiency.</p></div>
+                    </article>
+                    <article class="project" data-cs="frame">
+                        <div class="project-top"><span class="project-tag">IoT · Arduino</span><span>04</span></div>
+                        <div><h3>IoT Smart Safety Helmet</h3><p>An Arduino Uno-based safety helmet integrating alcohol-detection sensors with ignition-lock mechanisms for safer transportation.</p></div>
+                    </article>
+                    <article class="project" data-cs="frame">
+                        <div class="project-top"><span class="project-tag">blockchain intelligence</span><span>05</span></div>
+                        <div><h3>Real-Time Crypto Fraud Attribution &amp; Blockchain Intelligence System</h3><p>Developing an automated blockchain intelligence platform to trace suspicious cryptocurrency wallets, identify associated Virtual Asset Service Providers (VASPs), and analyze cross-chain fund movements through transaction graph analysis and AI/ML-assisted risk detection.</p></div>
+                    </article>
+                    <article class="project" data-cs="frame">
+                        <div class="project-top"><span class="project-tag">GNN · RAG · CTI</span><span>06</span></div>
+                        <div><h3>Hybrid GNN-RAG Framework for Cyber Threat Attribution</h3><p>Designing a hybrid Graph Neural Network and Retrieval-Augmented Generation framework that combines threat knowledge graphs with contextual cyber-threat intelligence for multi-hop APT attribution, IOC correlation, explainability, and evidence-based analysis.</p></div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="research" aria-labelledby="research-title">
+            <div class="wrap">
+                <div class="section-head">
+                    <p class="eyebrow">05 / research</p>
+                    <div>
+                        <h2 id="research-title">Looking beneath the interface.</h2>
+                        <p class="section-intro">Research and technical experience grounded in hardware security, secure application development, blockchain intelligence, and evidence-driven cyber-threat analysis.</p>
+                    </div>
+                </div>
+                <div class="research">
+                    <article class="research-main" data-cs="frame">
+                        <p class="eyebrow">research / systems in practice</p>
+                        <h3>Web, blockchain &amp; security</h3>
+                        <p>My research connects secure engineering with practical software: from building reliable web applications to following suspicious activity across blockchain networks.</p>
+                        <div class="research-focus">
+                            <article>
+                                <strong>web development</strong>
+                                <p>Designing secure full-stack systems with responsive interfaces, scalable backend services, API integration, database workflows, and OWASP-informed protection against common web threats.</p>
+                            </article>
+                            <article>
+                                <strong>blockchain intelligence</strong>
+                                <p>Tracing wallet activity, cross-chain fund movement, and transaction relationships to identify risk patterns, associated VASPs, and evidence useful for fraud and cybercrime investigations.</p>
+                            </article>
+                            <article>
+                                <strong>hardware &amp; cyber security</strong>
+                                <p>Studying power and timing leakage in cryptographic hardware and translating physical security findings into practical mitigation strategies and safer architectures.</p>
+                            </article>
+                        </div>
+                        <div class="research-meta">
+                            <div><span>domains</span><strong>web · chain · hardware</strong></div>
+                            <div><span>methods</span><strong>graphs · APIs · analysis</strong></div>
+                            <div><span>outcome</span><strong>secure systems</strong></div>
+                        </div>
+                    </article>
+                    <div class="research-points">
+                        <article class="research-point"><strong>01 / side-channel power analysis</strong><p>Investigating cryptographic hardware vulnerabilities by studying power-consumption leakage patterns that may reveal information during computation.</p></article>
+                        <article class="research-point"><strong>02 / timing and leakage analysis</strong><p>Analyzing embedded systems through timing behavior and power-consumption variation to understand how implementation details can expose sensitive operations.</p></article>
+                        <article class="research-point"><strong>03 / low-level attack mitigation</strong><p>Researching secure hardware architectures and mitigation approaches for reducing the attack surface created by physical and implementation-level leakage.</p></article>
+                        <article class="research-point"><strong>04 / secure full-stack development</strong><p>Building scalable web and mobile applications, integrating backend architectures with optimized frontend interfaces, and applying OWASP-oriented mitigation techniques.</p></article>
+                        <article class="research-point"><strong>05 / blockchain investigations</strong><p>Developing a real-time intelligence system to trace suspicious cryptocurrency wallets, identify associated exchanges and Virtual Asset Service Providers (VASPs), and detect fund-laundering patterns across multiple blockchain networks.</p></article>
+                        <article class="research-point"><strong>06 / transaction graph analysis</strong><p>Combining cross-chain tracing, transaction graph analysis, and AI/ML-assisted risk detection to turn complex fund movements into actionable intelligence for cybercrime investigations.</p></article>
+                        <article class="research-point"><strong>07 / heterogeneous threat graphs</strong><p>Researching a hybrid Graph Neural Network and Retrieval-Augmented Generation architecture that connects heterogeneous threat-intelligence graphs with unstructured cyber-threat intelligence data.</p></article>
+                        <article class="research-point"><strong>08 / evidence-grounded attribution</strong><p>Using graph-based relational reasoning and evidence-grounded language-model generation to improve multi-hop APT attribution, IOC correlation, verification, explainability, and evidence-based threat analysis.</p></article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="media" aria-labelledby="media-title">
+            <div class="wrap">
+                <div class="section-head">
+                    <p class="eyebrow">06 / visual field notes</p>
+                    <div>
+                        <h2 id="media-title">Proof of work, in motion.</h2>
+                        <p class="section-intro">A small visual archive of the rooms, people, and milestones that shape how I build: showing up, explaining clearly, and carrying the work through.</p>
+                    </div>
+                </div>
+                <div class="media-carousel" tabindex="0" aria-label="Visual field notes carousel">
+                    <div class="media-track">
+                        <div class="media-group">
+                            <article class="media-card" data-cs="media">
+                                <span class="media-index">01 / FIELD NOTE</span>
+                                <img src="./media/campus-event.jpg" alt="Suvrojeet Paul working at an event booth with a laptop and UEM Green 2026 signage" loading="eager">
+                                <div class="media-caption"><p class="eyebrow">campus / collaboration</p><h3>Building in public.</h3><p>Ideas become conversations and useful systems.</p></div>
+                            </article>
+                            <article class="media-card" data-cs="media">
+                                <span class="media-index">02</span>
+                                <img src="./media/speaking-session.jpg" alt="Suvrojeet Paul speaking at a podium during a technical presentation" loading="lazy">
+                                <div class="media-caption"><p class="eyebrow">communication</p><h3>Make the complex legible.</h3><p>Technical storytelling and public speaking.</p></div>
+                            </article>
+                            <article class="media-card" data-cs="media">
+                                <span class="media-index">03</span>
+                                <img src="./media/best-contributor.jpg" alt="Suvrojeet Paul receiving a Best Contributor certificate" loading="lazy">
+                                <div class="media-caption"><p class="eyebrow">recognition</p><h3>Consistency compounds.</h3><p>Best Contributor recognition.</p></div>
+                            </article>
+                            <article class="media-card" data-cs="media">
+                                <span class="media-index">04</span>
+                                <img src="./media/rank-certificate.jpg" alt="Suvrojeet Paul holding an academic rank certificate" loading="lazy">
+                                <div class="media-caption"><p class="eyebrow">milestone</p><h3>Keep raising the bar.</h3><p>Academic rank recognition.</p></div>
+                            </article>
+                        </div>
+                        <div class="media-group" aria-hidden="true">
+                            <article class="media-card"><span class="media-index">01 / FIELD NOTE</span><img src="./media/campus-event.jpg" alt="" loading="lazy"><div class="media-caption"><p class="eyebrow">campus / collaboration</p><h3>Building in public.</h3><p>Ideas become conversations and useful systems.</p></div></article>
+                            <article class="media-card"><span class="media-index">02</span><img src="./media/speaking-session.jpg" alt="" loading="lazy"><div class="media-caption"><p class="eyebrow">communication</p><h3>Make the complex legible.</h3><p>Technical storytelling and public speaking.</p></div></article>
+                            <article class="media-card"><span class="media-index">03</span><img src="./media/best-contributor.jpg" alt="" loading="lazy"><div class="media-caption"><p class="eyebrow">recognition</p><h3>Consistency compounds.</h3><p>Best Contributor recognition.</p></div></article>
+                            <article class="media-card"><span class="media-index">04</span><img src="./media/rank-certificate.jpg" alt="" loading="lazy"><div class="media-caption"><p class="eyebrow">milestone</p><h3>Keep raising the bar.</h3><p>Academic rank recognition.</p></div></article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education" aria-labelledby="education-title">
+            <div class="wrap">
+                <div class="section-head">
+                    <p class="eyebrow">07 / foundation</p>
+                    <div>
+                        <h2 id="education-title">Learning is part of the system.</h2>
+                        <p class="section-intro">Formal education and continuous learning across computer science, security, mathematics, and project delivery.</p>
+                    </div>
+                </div>
+                <div class="timeline">
+                    <article class="timeline-item"><span class="timeline-label">B.TECH / CURRENT</span><div><h3>Institute of Engineering and Management, Kolkata</h3><p>B.Tech in Computer Science &amp; Engineering (Networks), CGPA 9.21. Institute of Engineering and Management under the school of University of Engineering and Management (UEM), Kolkata.</p></div></article>
+                    <article class="timeline-item"><span class="timeline-label">SCHOOLING</span><div><h3>Authpur National Model School</h3><p>Secondary and higher secondary education.</p></div></article>
+                </div>
+            </div>
+        </section>
+
+        <section id="certifications" aria-labelledby="certifications-title">
+            <div class="wrap">
+                <div class="section-head">
+                    <p class="eyebrow">08 / certifications</p>
+                    <div>
+                        <h2 id="certifications-title">A growing signal library.</h2>
+                        <p class="section-intro">Selected certifications spanning algorithms, mathematics, project management, information theory, cryptography, cybersecurity, and data analytics.</p>
+                    </div>
+                </div>
+                <div class="cert-grid">
+                    <article class="cert"><span class="cert-number">01</span><h3>Programming, Data Structures and Algorithms using C</h3><p>NPTEL / CMI</p></article>
+                    <article class="cert"><span class="cert-number">02</span><h3>Discrete Mathematics</h3><p>IIT Madras</p></article>
+                    <article class="cert"><span class="cert-number">03</span><h3>Foundations of Project Management</h3><p>Google</p></article>
+                    <article class="cert"><span class="cert-number">04</span><h3>Information Theory</h3><p>CUHK</p></article>
+                    <article class="cert"><span class="cert-number">05</span><h3>Cyber Security Fundamentals</h3><p>University of London</p></article>
+                    <article class="cert"><span class="cert-number">06</span><h3>Advanced Systems Security Topics</h3><p>University of London</p></article>
+                    <article class="cert"><span class="cert-number">07</span><h3>Classical Cryptosystem and Core Concepts</h3><p>University of Colorado</p></article>
+                    <article class="cert"><span class="cert-number">08</span><h3>Mathematical Concepts for Cryptography</h3><p>University of Colorado</p></article>
+                    <article class="cert"><span class="cert-number">09</span><h3>Advanced Course on Cybersecurity and Data Analytics</h3><p>Asian Institute of Technology</p></article>
+                    <article class="cert"><span class="cert-number">10</span><h3>Cybersecurity and Privacy</h3><p>IIT Madras</p></article>
+                </div>
+            </div>
+        </section>
+
+        <section id="community" aria-labelledby="community-title">
+            <div class="wrap">
+                <div class="section-head">
+                    <p class="eyebrow">09 / community</p>
+                    <div>
+                        <h2 id="community-title">Better systems are built together.</h2>
+                        <p class="section-intro">Active connection to technical communities that encourage research, peer learning, and responsible building.</p>
+                    </div>
+                </div>
+                <div class="stat-list">
+                    <div class="stat"><span>01</span><strong>IEEE Microwave Theory and Technology Society (MTT-S)</strong></div>
+                    <div class="stat"><span>02</span><strong>IEEE Computer Society</strong></div>
+                    <div class="stat"><span>03</span><strong>Google Gemini Student Community (UEMK Chapter)</strong></div>
+                    <div class="stat"><span>04</span><strong>GeeksforGeeks Student Chapter</strong></div>
+                    <div class="stat"><span>05</span><strong>IEEE Communications Society</strong></div>
+                    <div class="stat"><span>languages</span><strong>English · Hindi · Bengali</strong></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact" aria-labelledby="contact-title">
+            <div class="wrap">
+                <div class="contact-box">
+                    <div>
+                        <p class="eyebrow">10 / connect</p>
+                        <h2 id="contact-title">Let's build something secure.</h2>
+                    </div>
+                    <div class="contact-links">
+                        <a href="mailto:paulsuvrojeet@gmail.com">paulsuvrojeet@gmail.com ↗</a>
+                        <a href="tel:+918697756505">+91 8697556505 ↗</a>
+                        <a href="./resume-suvrojeetpaul.pdf" download>Download full resume ↓</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="wrap">
+            <span>SUVROJEET PAUL / SECURE SOFTWARE &amp; SYSTEMS</span>
+            <span>KOLKATA, WEST BENGAL, INDIA · 2026</span>
+        </div>
+    </footer>
+
+    <script src="./cursor-swarm.js"></script>
+    <script>
+        new CursorSwarm({
+            cursors: 4,
+            palette: 'default',
+            startPosition: 'corners',
+            deconstruct: false,
+            copyPaste: false,
+            relocation: false,
+            trigger: 0.9,
+            typeDuration: 1.25,
+            hudPosition: 'bottom-left'
+        }).init();
+
+        const wordmark = document.querySelector('.tech-wordmark');
+        const wordmarkCanvas = wordmark?.querySelector('canvas');
+        if (wordmark && wordmarkCanvas) {
+            const context = wordmarkCanvas.getContext('2d');
+            const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const letters = [...wordmark.dataset.wordmark];
+            let bounds = [];
+            let pointer = { x: -1000, y: -1000 };
+            let active = -1;
+            let frame = 0;
+
+            const resizeWordmark = () => {
+                const rect = wordmark.getBoundingClientRect();
+                const dpr = Math.min(devicePixelRatio || 1, 2);
+                wordmarkCanvas.width = rect.width * dpr;
+                wordmarkCanvas.height = rect.height * dpr;
+                context.setTransform(dpr, 0, 0, dpr, 0, 0);
+                const size = Math.min(142, Math.max(52, rect.width / 7.5));
+                context.font = `800 ${size}px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace`;
+                context.textBaseline = 'middle';
+                context.letterSpacing = `${size * -.08}px`;
+                const total = letters.reduce((width, letter) => width + context.measureText(letter).width, 0);
+                let x = Math.max(0, (rect.width - total) / 2);
+                bounds = letters.map(letter => {
+                    const width = context.measureText(letter).width;
+                    const item = { letter, x, width, center: x + width / 2 };
+                    x += width;
+                    return item;
+                });
+                drawWordmark();
+            };
+
+            const drawWordmark = () => {
+                const rect = wordmark.getBoundingClientRect();
+                const height = rect.height;
+                context.clearRect(0, 0, rect.width, height);
+                bounds.forEach((item, index) => {
+                    const distance = Math.abs(pointer.x - item.center);
+                    const isActive = index === active && pointer.y >= 0 && pointer.y <= height;
+                    context.fillStyle = isActive ? 'transparent' : index > 8 ? '#d94a00' : '#ffffff';
+                    context.strokeStyle = '#3be8ff';
+                    context.lineWidth = 1.5;
+                    context.setLineDash(isActive ? [4, 3] : []);
+                    if (!isActive) {
+                        context.fillText(item.letter, item.x, height / 2);
+                    } else {
+                        context.globalAlpha = Math.max(.18, 1 - distance / 180);
+                        context.strokeText(item.letter, item.x, height / 2);
+                        context.globalAlpha = 1;
+                    }
+                });
+                context.setLineDash([]);
+            };
+
+            const updateActiveLetter = () => {
+                const next = bounds.findIndex(item => pointer.x >= item.x && pointer.x <= item.x + item.width);
+                if (next !== active) {
+                    active = next;
+                    drawWordmark();
+                }
+            };
+
+            wordmark.addEventListener('pointermove', event => {
+                const rect = wordmark.getBoundingClientRect();
+                pointer = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+                updateActiveLetter();
+            });
+            wordmark.addEventListener('pointerleave', () => {
+                pointer = { x: -1000, y: -1000 };
+                active = -1;
+                drawWordmark();
+            });
+            addEventListener('resize', resizeWordmark, { passive: true });
+            resizeWordmark();
+            if (!reducedMotion) {
+                const animate = () => {
+                    if (active >= 0) drawWordmark();
+                    frame = requestAnimationFrame(animate);
+                };
+                frame = requestAnimationFrame(animate);
+            }
+            wordmark.addEventListener('remove', () => cancelAnimationFrame(frame), { once: true });
+        }
+
+        const auroraCanvas = document.querySelector('#aurora-bg');
+        const auroraGl = auroraCanvas?.getContext('webgl2', { alpha: true, antialias: false, powerPreference: 'low-power' });
+        if (auroraGl) {
+            const vertexSource = `#version 300 es
+                const vec2 p[3] = vec2[3](vec2(-1., -1.), vec2(3., -1.), vec2(-1., 3.));
+                void main() { gl_Position = vec4(p[gl_VertexID], 0., 1.); }`;
+            const fragmentSource = `#version 300 es
+                precision highp float;
+                uniform vec2 uResolution;
+                uniform float uTime;
+                uniform vec2 uMouse;
+                out vec4 color;
+                #define TAU 6.28318530718
+
+                vec3 gradientHash(vec3 p) {
+                    p = vec3(dot(p, vec3(127.1, 311.7, 234.6)), dot(p, vec3(269.5, 183.3, 198.3)), dot(p, vec3(169.5, 283.3, 156.9)));
+                    vec3 h = fract(sin(p) * 43758.5453);
+                    float phi = acos(2. * h.x - 1.);
+                    float theta = TAU * h.y;
+                    return vec3(cos(theta) * sin(phi), sin(theta) * cos(phi), cos(phi));
+                }
+                float fade5(float t) { return t * t * t * (t * (t * 6. - 15.) + 10.); }
+                float perlin(vec3 p) {
+                    vec3 cell = floor(p), f = fract(p);
+                    vec3 q = f * f * f * (f * (f * 6. - 15.) + 10.);
+                    float n000 = dot(gradientHash(cell), f);
+                    float n100 = dot(gradientHash(cell + vec3(1,0,0)), f - vec3(1,0,0));
+                    float n010 = dot(gradientHash(cell + vec3(0,1,0)), f - vec3(0,1,0));
+                    float n110 = dot(gradientHash(cell + vec3(1,1,0)), f - vec3(1,1,0));
+                    float n001 = dot(gradientHash(cell + vec3(0,0,1)), f - vec3(0,0,1));
+                    float n101 = dot(gradientHash(cell + vec3(1,0,1)), f - vec3(1,0,1));
+                    float n011 = dot(gradientHash(cell + vec3(0,1,1)), f - vec3(0,1,1));
+                    float n111 = dot(gradientHash(cell + vec3(1,1,1)), f - vec3(1,1,1));
+                    float x00 = mix(n000, n100, q.x), x10 = mix(n010, n110, q.x);
+                    float x01 = mix(n001, n101, q.x), x11 = mix(n011, n111, q.x);
+                    return mix(mix(x00, x10, q.y), mix(x01, x11, q.y), q.z);
+                }
+                vec3 cosinePalette(float t) {
+                    return vec3(.5) + vec3(.5) * cos(TAU * (vec3(1., .72, .58) * t + vec3(.08, .22, .36)));
+                }
+                void main() {
+                    vec2 uv = gl_FragCoord.xy / uResolution.y;
+                    vec2 center = vec2(uResolution.x / uResolution.y * .5, .5);
+                    float drift = (uMouse.x - .5) * .10;
+                    float n = 0.;
+                    float amp = 1.;
+                    float freq = 1.65;
+                    for (int i = 0; i < 3; i++) {
+                        n += perlin(vec3(uv * freq + vec2(drift, 0.), uTime * (.07 + float(i) * .025))) * amp;
+                        freq *= 2.05;
+                        amp *= .16;
+                    }
+                    float sweep = uv.x * .72 + uTime * .018;
+                    float ribbon = uv.y - (.48 + n * .17 + sin(uv.x * 2.7 + uTime * .08) * .08);
+                    float glow = exp(-abs(ribbon) * (8.5 + n * 2.));
+                    float haze = exp(-abs(ribbon + .16) * 4.2) * .28;
+                    vec3 palette = cosinePalette(sweep + n * .18);
+                    vec3 second = cosinePalette(sweep + .34 + n * .12);
+                    float mouseGlow = exp(-distance(uv, center + vec2((uMouse.x - .5) * .6, (uMouse.y - .5) * .25)) * 2.8) * .16;
+                    vec3 result = palette * glow * .30 + second * haze * .20 + vec3(.05, .18, .24) * mouseGlow;
+                    result *= smoothstep(1.75, .15, abs(uv.x - center.x) * .6);
+                    float alpha = clamp(max(result.r, max(result.g, result.b)) * .48, 0., .38);
+                    color = vec4(result * .72, alpha);
+                }`;
+            const compileShader = (type, source) => {
+                const shader = auroraGl.createShader(type);
+                auroraGl.shaderSource(shader, source);
+                auroraGl.compileShader(shader);
+                if (!auroraGl.getShaderParameter(shader, auroraGl.COMPILE_STATUS)) {
+                    console.warn('Aurora shader failed to compile:', auroraGl.getShaderInfoLog(shader));
+                    auroraGl.deleteShader(shader);
+                    return null;
+                }
+                return shader;
+            };
+            const vertex = compileShader(auroraGl.VERTEX_SHADER, vertexSource);
+            const fragment = compileShader(auroraGl.FRAGMENT_SHADER, fragmentSource);
+            const program = vertex && fragment ? auroraGl.createProgram() : null;
+            if (program) {
+                auroraGl.attachShader(program, vertex);
+                auroraGl.attachShader(program, fragment);
+                auroraGl.linkProgram(program);
+            }
+            if (program && auroraGl.getProgramParameter(program, auroraGl.LINK_STATUS)) {
+                const resolution = auroraGl.getUniformLocation(program, 'uResolution');
+                const time = auroraGl.getUniformLocation(program, 'uTime');
+                const mouse = auroraGl.getUniformLocation(program, 'uMouse');
+                const pointer = { x: .5, y: .5 };
+                let raf = 0;
+                let start = performance.now();
+                const resizeAurora = () => {
+                    const scale = Math.min(devicePixelRatio || 1, 1.25);
+                    auroraCanvas.width = Math.max(1, Math.round(innerWidth * scale));
+                    auroraCanvas.height = Math.max(1, Math.round(innerHeight * scale));
+                };
+                const drawAurora = now => {
+                    auroraGl.viewport(0, 0, auroraCanvas.width, auroraCanvas.height);
+                    auroraGl.clearColor(0, 0, 0, 0);
+                    auroraGl.clear(auroraGl.COLOR_BUFFER_BIT);
+                    auroraGl.useProgram(program);
+                    auroraGl.uniform2f(resolution, auroraCanvas.width, auroraCanvas.height);
+                    auroraGl.uniform1f(time, (now - start) / 1000);
+                    auroraGl.uniform2f(mouse, pointer.x, pointer.y);
+                    auroraGl.drawArrays(auroraGl.TRIANGLES, 0, 3);
+                    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) raf = requestAnimationFrame(drawAurora);
+                };
+                addEventListener('resize', resizeAurora, { passive: true });
+                addEventListener('pointermove', event => {
+                    pointer.x = event.clientX / innerWidth;
+                    pointer.y = 1 - event.clientY / innerHeight;
+                }, { passive: true });
+                resizeAurora();
+                drawAurora(performance.now());
+            }
+        }
+
+        const light = document.querySelector('.cursor-light');
+        if (light && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            let x = innerWidth * .5, y = innerHeight * .35;
+            let tx = x, ty = y;
+            const move = event => {
+                tx = event.clientX;
+                ty = event.clientY;
+                light.style.opacity = '1';
+            };
+            const render = () => {
+                x += (tx - x) * .12;
+                y += (ty - y) * .12;
+                light.style.transform = `translate(${x - 150}px, ${y - 150}px)`;
+                requestAnimationFrame(render);
+            };
+            addEventListener('pointermove', move, { passive: true });
+            addEventListener('pointerleave', () => { light.style.opacity = '0'; }, { passive: true });
+            render();
+        }
+    </script>
+</body>
+</html>

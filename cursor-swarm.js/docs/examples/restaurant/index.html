@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Casa Brasa — Cocina de fuego</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: "Trebuchet MS", system-ui, sans-serif; background: #1c1410; color: #f3e6d4; }
+        .hero { height: 100vh; display: grid; place-items: center; text-align: center; background: linear-gradient(rgba(28,20,16,.55), rgba(28,20,16,.9)), url("https://picsum.photos/seed/brasa-fire/1600/1000") center/cover; padding: 24px; }
+        .hero h1 { font-family: Georgia, serif; font-size: clamp(56px, 11vw, 150px); font-weight: 400; letter-spacing: .02em; }
+        .hero p { font-size: 18px; letter-spacing: .3em; text-transform: uppercase; color: #e5a46b; margin-top: 10px; }
+        .book { display: inline-block; margin-top: 32px; padding: 14px 26px; background: #e5a46b; color: #1c1410; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; border-radius: 2px; }
+        .menu { max-width: 900px; margin: 0 auto; padding: 110px 24px; }
+        .menu h2 { font-family: Georgia, serif; font-size: 52px; font-weight: 400; text-align: center; margin-bottom: 60px; }
+        .course { margin-bottom: 54px; }
+        .course h3 { font-size: 13px; letter-spacing: .32em; text-transform: uppercase; color: #e5a46b; border-bottom: 1px solid #4a3a2e; padding-bottom: 10px; margin-bottom: 18px; }
+        .dish { display: flex; justify-content: space-between; gap: 20px; padding: 12px 0; }
+        .dish b { font-size: 19px; font-weight: 600; }
+        .dish small { display: block; color: #a8957f; font-size: 14px; margin-top: 4px; }
+        .dish span { font-family: Georgia, serif; font-size: 20px; color: #e5a46b; }
+        .photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .photos img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+        .visit { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 900px; margin: 0 auto; padding: 110px 24px; }
+        .visit h2 { font-family: Georgia, serif; font-size: 40px; font-weight: 400; margin-bottom: 14px; }
+        .visit p { color: #c9b8a2; line-height: 1.8; }
+        .hours { background: #2a1f18; border: 1px solid #4a3a2e; padding: 28px; border-radius: 4px; }
+        footer { text-align: center; padding: 40px; color: #7d6b58; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; }
+        @media (max-width: 700px) { .visit { grid-template-columns: 1fr; } .photos { grid-template-columns: 1fr 1fr; } }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div>
+            <h1>Casa Brasa</h1>
+            <p>Cocina de fuego · Valencia</p>
+            <a class="book" href="#">Reservar mesa</a>
+        </div>
+    </section>
+
+    <section class="menu">
+        <h2>La carta</h2>
+        <div class="course">
+            <h3>Para empezar</h3>
+            <div class="dish"><div><b>Pan de masa madre</b><small>Mantequilla ahumada, sal de Ibiza</small></div><span>6</span></div>
+            <div class="dish"><div><b>Croquetas de jamón</b><small>Bechamel de leche fresca, 6 unidades</small></div><span>12</span></div>
+            <div class="dish"><div><b>Alcachofas a la brasa</b><small>Romesco, avellana tostada</small></div><span>14</span></div>
+        </div>
+        <div class="course">
+            <h3>Del fuego</h3>
+            <div class="dish"><div><b>Chuletón de vaca vieja</b><small>Madurado 45 días, 1 kg</small></div><span>68</span></div>
+            <div class="dish"><div><b>Pulpo a la leña</b><small>Patata asada, pimentón de la Vera</small></div><span>26</span></div>
+            <div class="dish"><div><b>Arroz de costra</b><small>Para dos, mínimo 30 minutos</small></div><span>38</span></div>
+        </div>
+        <div class="course">
+            <h3>Postres</h3>
+            <div class="dish"><div><b>Tarta de queso tostada</b><small>Queso de cabra, miel de romero</small></div><span>9</span></div>
+            <div class="dish"><div><b>Naranja a la brasa</b><small>Helado de aceite de oliva</small></div><span>8</span></div>
+        </div>
+    </section>
+
+    <section class="photos">
+        <img src="https://picsum.photos/seed/brasa1/600/600" alt="">
+        <img src="https://picsum.photos/seed/brasa2/600/600" alt="">
+        <img src="https://picsum.photos/seed/brasa3/600/600" alt="">
+    </section>
+
+    <section class="visit">
+        <div>
+            <h2>Visítanos</h2>
+            <p>Carrer de la Brasa 12, 46001 Valencia.<br>A cinco minutos del Mercado Central.</p>
+        </div>
+        <div class="hours">
+            <p><b>Martes a sábado</b><br>13:30 – 16:00 · 20:30 – 23:30</p>
+            <p style="margin-top:12px"><b>Domingo</b><br>13:30 – 16:30</p>
+        </div>
+    </section>
+
+    <footer>© 2026 Casa Brasa</footer>
+
+    <script src="../../cursor-swarm.js"></script>
+    <script>
+        // A single chef that starts in the top-left corner, no HUD, builds once.
+        new CursorSwarm({
+            cursors: 1,
+            agents: [{ name: 'CHEF', color: '#e5a46b', x: 40, y: 40 }],
+            deconstruct: false,
+            hud: false,
+            speed: 1.4
+        }).init();
+    </script>
+</body>
+</html>

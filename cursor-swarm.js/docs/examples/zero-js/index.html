@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hackathon 2026 — zero-JS setup</title>
+    <!--
+        No JavaScript to write: data-auto initialises the swarm for you.
+        Every data-* attribute is an option (kebab-case → camelCase).
+        Put it in <head> so the page is hidden until the agents are ready (no flash).
+    -->
+    <script src="../../cursor-swarm.js" data-auto
+            data-cursors="4"
+            data-start-position="corners"
+            data-colors="#00ff9c,#ff2e88,#ffe600,#2ee6ff"
+            data-exit-after-build="home"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: "Courier New", monospace; background: #050b08; color: #c8ffe4; }
+        .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+        .hero { min-height: 90vh; display: flex; flex-direction: column; justify-content: center; }
+        .hero h1 { font-size: clamp(48px, 10vw, 130px); line-height: .9; color: #00ff9c; }
+        .hero p { font-size: 20px; margin-top: 22px; max-width: 560px; }
+        .badge { display: inline-block; border: 1px solid #00ff9c; padding: 6px 10px; font-size: 13px; margin-bottom: 24px; align-self: flex-start; }
+        section { padding: 90px 0; }
+        h2 { font-size: 40px; margin-bottom: 30px; color: #ff2e88; }
+        .tracks { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+        .track { border: 1px solid #1d4a36; background: #0a1a12; padding: 24px; }
+        .track h3 { color: #ffe600; margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; }
+        td { padding: 14px 8px; border-bottom: 1px dashed #1d4a36; }
+        td:first-child { color: #2ee6ff; width: 120px; }
+        .register { text-align: center; }
+        .register a { display: inline-block; background: #00ff9c; color: #050b08; padding: 18px 34px; font-weight: 700; font-size: 18px; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="hero">
+            <span class="badge">// 48 HOURS · NOV 21–23</span>
+            <h1>HACK<br>THE CITY</h1>
+            <p>Build something your neighbourhood actually needs. Open data, free pizza, real mentors.</p>
+        </div>
+
+        <section>
+            <h2>&gt; tracks</h2>
+            <div class="tracks">
+                <div class="track"><h3>Mobility</h3><p>Smarter buses, safer bike lanes, fewer traffic jams.</p></div>
+                <div class="track"><h3>Energy</h3><p>Visualise and reduce consumption across public buildings.</p></div>
+                <div class="track"><h3>Community</h3><p>Tools that connect neighbours and local businesses.</p></div>
+            </div>
+        </section>
+
+        <section>
+            <h2>&gt; schedule</h2>
+            <table>
+                <tr><td>FRI 18:00</td><td>Opening keynote and team formation</td></tr>
+                <tr><td>SAT 10:00</td><td>Mentor office hours</td></tr>
+                <tr><td>SUN 14:00</td><td>Demos and judging</td></tr>
+                <tr><td>SUN 17:00</td><td>Awards and closing party</td></tr>
+            </table>
+        </section>
+
+        <section class="register">
+            <h2>&gt; ready?</h2>
+            <a href="#">REGISTER YOUR TEAM</a>
+        </section>
+    </div>
+    <!-- the instance is exposed as window.cursorSwarm, e.g. cursorSwarm.pause() -->
+</body>
+</html>

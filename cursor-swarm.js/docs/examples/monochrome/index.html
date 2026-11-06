@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TONO — One color studio</title>
+    <style>
+        /* the whole site is derived from a single color: change --base and everything follows */
+        :root {
+            --base: #ff5e00;
+            --bg: color-mix(in oklab, var(--base) 9%, #070707);
+            --surface: color-mix(in oklab, var(--base) 16%, #0b0b0b);
+            --line: color-mix(in oklab, var(--base) 35%, transparent);
+            --fg: color-mix(in oklab, var(--base) 12%, #fff);
+            --mute: color-mix(in oklab, var(--base) 45%, #8a8a8a);
+            --deep: color-mix(in oklab, var(--base) 55%, #000);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { background: var(--bg); transition: background .6s; }
+        body { font-family: "Helvetica Neue", Arial, sans-serif; color: var(--fg); background: var(--bg); line-height: 1.55; transition: background .6s, color .6s; }
+        .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+        .mono { font: 500 11px/1.4 ui-monospace, Menlo, monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--mute); }
+
+        .hero { min-height: 92vh; display: flex; flex-direction: column; justify-content: center; padding-top: 80px; }
+        .hero h1 { font-size: clamp(64px, 13vw, 190px); line-height: .84; font-weight: 900; letter-spacing: -.05em; text-transform: uppercase; margin: 22px 0 28px; }
+        .hero h1 em { font-style: normal; color: var(--base); }
+        .hero p { max-width: 520px; font-size: 19px; color: var(--mute); }
+
+        section { padding: 100px 0; }
+        h2 { font-size: clamp(36px, 5vw, 68px); line-height: .95; text-transform: uppercase; letter-spacing: -.03em; margin: 14px 0 40px; }
+
+        .shades { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+        .shade { aspect-ratio: 3/4; border-radius: 6px; display: flex; align-items: flex-end; padding: 12px; font: 600 11px ui-monospace, Menlo, monospace; }
+        .shade:nth-child(1) { background: color-mix(in oklab, var(--base) 20%, #fff); color: #000; }
+        .shade:nth-child(2) { background: color-mix(in oklab, var(--base) 45%, #fff); color: #000; }
+        .shade:nth-child(3) { background: color-mix(in oklab, var(--base) 75%, #fff); color: #000; }
+        .shade:nth-child(4) { background: var(--base); color: #000; }
+        .shade:nth-child(5) { background: color-mix(in oklab, var(--base) 75%, #000); color: #fff; }
+        .shade:nth-child(6) { background: color-mix(in oklab, var(--base) 50%, #000); color: #fff; }
+        .shade:nth-child(7) { background: color-mix(in oklab, var(--base) 25%, #000); color: #fff; }
+
+        .services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .service { padding: 30px; background: var(--surface); border: 1px solid var(--line); }
+        .service b { font: 600 12px ui-monospace, Menlo, monospace; color: var(--base); }
+        .service h3 { font-size: 26px; margin: 14px 0 10px; text-transform: uppercase; }
+        .service p { color: var(--mute); }
+
+        .gallery { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; }
+        .gallery figure { position: relative; overflow: hidden; aspect-ratio: 3/4; }
+        .gallery figure:first-child { grid-row: span 2; aspect-ratio: auto; }
+        .gallery img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(1) contrast(1.15); }
+        /* tint every photo with the base color */
+        .gallery figure::after { content: ""; position: absolute; inset: 0; background: var(--base); mix-blend-mode: color; transition: background .6s; }
+
+        .quote { font-size: clamp(30px, 4.6vw, 64px); line-height: 1.05; font-weight: 800; text-transform: uppercase; letter-spacing: -.02em; max-width: 18ch; }
+        .quote span { color: var(--base); }
+
+        .contact { text-align: center; padding: 140px 0; }
+        .contact a { display: inline-block; margin-top: 30px; padding: 18px 34px; background: var(--base); color: var(--bg); font-weight: 800; text-transform: uppercase; letter-spacing: .08em; text-decoration: none; }
+        footer { border-top: 1px solid var(--line); padding: 30px 0 110px; }
+
+        /* color toolbar: ignored by the swarm */
+        .picker { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 2147483647; display: flex; align-items: center; gap: 14px; padding: 10px 14px; background: color-mix(in oklab, var(--base) 10%, rgba(8,8,8,.9)); border: 1px solid var(--line); backdrop-filter: blur(14px); max-width: calc(100vw - 24px); flex-wrap: wrap; justify-content: center; }
+        .picker .sw { display: flex; gap: 6px; }
+        .picker button { width: 24px; height: 24px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; background: var(--c); transition: transform .2s, border-color .2s; }
+        .picker button:hover { transform: scale(1.15); }
+        .picker button.on { border-color: #fff; }
+        .picker input[type=color] { width: 30px; height: 30px; border: 0; background: none; cursor: pointer; padding: 0; }
+        .picker .gen { display: flex; gap: 3px; }
+        .picker .gen i { width: 12px; height: 24px; border-radius: 2px; transition: background .4s; }
+        .picker .mono { color: var(--fg); }
+        @media (max-width: 800px) { .services { grid-template-columns: 1fr; } .shades { grid-template-columns: repeat(4, 1fr); } .gallery { grid-template-columns: 1fr 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="picker" data-cs-ignore>
+        <span class="mono">Base</span>
+        <div class="sw" id="sw"></div>
+        <input type="color" id="custom" value="#ff5e00" title="Pick any color">
+        <span class="mono">Agents</span>
+        <div class="gen" id="gen"></div>
+    </div>
+
+    <main class="wrap">
+        <div class="hero">
+            <span class="mono">TONO · Design studio · Est. 2019</span>
+            <h1>One<br><em>color.</em><br>Every shade.</h1>
+            <p>We build brands from a single hue. Pick a color in the toolbar below and watch the whole studio, and the agents building it, change with it.</p>
+        </div>
+
+        <section>
+            <span class="mono">01 · Scale</span>
+            <h2>Seven shades, one decision.</h2>
+            <div class="shades">
+                <div class="shade">100</div><div class="shade">200</div><div class="shade">300</div><div class="shade">400</div>
+                <div class="shade">500</div><div class="shade">600</div><div class="shade">700</div>
+            </div>
+        </section>
+
+        <section>
+            <span class="mono">02 · Services</span>
+            <h2>What we do</h2>
+            <div class="services">
+                <div class="service"><b>A/01</b><h3>Identity</h3><p>Logos, type and color systems that hold together from favicon to billboard.</p></div>
+                <div class="service"><b>A/02</b><h3>Web</h3><p>Fast, accessible sites designed around a single, memorable tone.</p></div>
+                <div class="service"><b>A/03</b><h3>Motion</h3><p>Animation guidelines so your brand moves the same way everywhere.</p></div>
+            </div>
+        </section>
+
+        <section>
+            <span class="mono">03 · Work</span>
+            <h2>Selected projects</h2>
+            <div class="gallery">
+                <figure data-cs="media"><img data-cs="skip" src="https://picsum.photos/seed/tono-a/900/1300" alt=""></figure>
+                <figure data-cs="media"><img data-cs="skip" src="https://picsum.photos/seed/tono-b/600/800" alt=""></figure>
+                <figure data-cs="media"><img data-cs="skip" src="https://picsum.photos/seed/tono-c/600/800" alt=""></figure>
+                <figure data-cs="media"><img data-cs="skip" src="https://picsum.photos/seed/tono-d/600/800" alt=""></figure>
+                <figure data-cs="media"><img data-cs="skip" src="https://picsum.photos/seed/tono-e/600/800" alt=""></figure>
+            </div>
+        </section>
+
+        <section>
+            <p class="quote">Restraint is a <span>color</span> too.</p>
+        </section>
+
+        <div class="contact">
+            <span class="mono">04 · Contact</span>
+            <h2>Let's pick your color.</h2>
+            <a href="#">Start a project</a>
+        </div>
+    </main>
+    <footer><div class="wrap mono">© 2026 TONO Studio · Built by a monochrome swarm</div></footer>
+
+    <script src="../../cursor-swarm.js"></script>
+    <script>
+        const BASES = ['#ff5e00', '#ff2d55', '#d63bff', '#6c5cff', '#1e90ff', '#00c2d1', '#18c964', '#c6ff3b', '#e8e8e8'];
+        const root = document.documentElement;
+
+        const swarm = new CursorSwarm({
+            cursors: 5,
+            palette: 'mono:' + BASES[0],   // 5 shades of the base color
+            startPosition: 'center',
+            hudPosition: 'top-left'
+        }).init();
+
+        const paintGenerated = () => {
+            document.getElementById('gen').innerHTML = swarm.colors.map(c => `<i style="background:${c}"></i>`).join('');
+        };
+
+        const setBase = color => {
+            root.style.setProperty('--base', color);    // the site
+            swarm.setPalette('mono:' + color);           // the swarm
+            document.getElementById('custom').value = color;
+            document.querySelectorAll('#sw button').forEach(b => b.classList.toggle('on', b.dataset.c === color));
+            paintGenerated();
+        };
+
+        document.getElementById('sw').innerHTML = BASES.map(c => `<button data-c="${c}" style="--c:${c}" aria-label="${c}"></button>`).join('');
+        document.getElementById('sw').addEventListener('click', e => { if (e.target.dataset.c) setBase(e.target.dataset.c); });
+        document.getElementById('custom').addEventListener('input', e => setBase(e.target.value));
+        setBase(BASES[0]);
+    </script>
+</body>
+</html>

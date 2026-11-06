@@ -1,0 +1,16 @@
+{
+  "name": "cursor-swarm",
+  "version": "1.0.0",
+  "description": "A swarm of agent cursors that builds your web page as you scroll.",
+  "main": "cursor-swarm.js",
+  "browser": "cursor-swarm.js",
+  "unpkg": "cursor-swarm.js",
+  "jsdelivr": "cursor-swarm.js",
+  "files": ["cursor-swarm.js"],
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["animation", "scroll", "cursor", "agents", "reveal", "typewriter"],
+  "author": "ZhengsLinLei",
+  "license": "MIT"
+}

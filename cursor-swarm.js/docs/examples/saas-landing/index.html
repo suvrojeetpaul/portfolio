@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nimbus — Ship faster</title>
+    <style>
+        :root { --ink: #0f1222; --mute: #5b6078; --line: #e6e8f0; --brand: #5b5bf7; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); background: #fff; line-height: 1.55; }
+        a { color: inherit; text-decoration: none; }
+        .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; background: rgba(255,255,255,.85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); z-index: 10; }
+        header .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+        .logo { font-weight: 800; font-size: 20px; letter-spacing: -.02em; }
+        nav { display: flex; gap: 28px; font-size: 14px; color: var(--mute); }
+        .btn { display: inline-block; padding: 11px 18px; border-radius: 10px; font-weight: 600; font-size: 14px; border: 1px solid var(--line); background: #fff; }
+        .btn.primary { background: var(--brand); color: #fff; border-color: var(--brand); }
+        .hero { padding: 110px 0 80px; text-align: center; }
+        .pill { display: inline-block; padding: 6px 12px; border-radius: 99px; background: #eef0ff; color: var(--brand); font-size: 13px; font-weight: 600; }
+        .hero h1 { font-size: clamp(40px, 6vw, 72px); line-height: 1.02; letter-spacing: -.035em; margin: 22px auto 18px; max-width: 14ch; }
+        .hero p { color: var(--mute); font-size: 19px; max-width: 560px; margin: 0 auto 30px; }
+        .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .shot { margin: 64px auto 0; max-width: 980px; border-radius: 16px; overflow: hidden; box-shadow: 0 30px 80px -30px rgba(15,18,34,.4); }
+        .shot img { display: block; width: 100%; aspect-ratio: 16/8; object-fit: cover; }
+        .logos { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; padding: 40px 0; color: #9aa0b8; font-weight: 700; font-size: 18px; letter-spacing: .04em; }
+        section { padding: 90px 0; }
+        h2 { font-size: clamp(30px, 4vw, 46px); letter-spacing: -.03em; line-height: 1.1; margin-bottom: 14px; }
+        .lead { color: var(--mute); max-width: 560px; margin-bottom: 44px; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+        .card { padding: 28px; border: 1px solid var(--line); border-radius: 14px; background: #fafbff; }
+        .card .ic { width: 40px; height: 40px; border-radius: 10px; background: var(--brand); margin-bottom: 18px; }
+        .card h3 { font-size: 18px; margin-bottom: 8px; }
+        .card p { color: var(--mute); font-size: 15px; }
+        .split { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+        .split img { width: 100%; border-radius: 14px; aspect-ratio: 4/3; object-fit: cover; }
+        .split ul { list-style: none; margin-top: 20px; display: grid; gap: 10px; }
+        .split li { padding-left: 26px; position: relative; color: var(--mute); }
+        .split li::before { content: "✓"; position: absolute; left: 0; color: var(--brand); font-weight: 700; }
+        .pricing { background: #0f1222; color: #fff; }
+        .pricing .lead { color: #a6abc6; }
+        .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+        .plan { padding: 32px; border-radius: 16px; border: 1px solid #2a2f4d; background: #161a33; }
+        .plan.hot { background: var(--brand); border-color: var(--brand); }
+        .plan .price { font-size: 44px; font-weight: 800; letter-spacing: -.03em; margin: 12px 0; }
+        .plan p { color: #c7cbe4; font-size: 15px; margin-bottom: 22px; }
+        .plan .btn { background: #fff; color: var(--ink); border: 0; }
+        .cta { text-align: center; }
+        .cta h2 { max-width: 18ch; margin: 0 auto 24px; }
+        footer { border-top: 1px solid var(--line); padding: 40px 0; color: var(--mute); font-size: 14px; }
+        footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+        @media (max-width: 800px) { .grid, .plans, .split { grid-template-columns: 1fr; } nav { display: none; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="wrap">
+            <a class="logo" href="#">nimbus</a>
+            <nav><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#">Docs</a><a href="#">Blog</a></nav>
+            <a class="btn primary" href="#">Start free</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="hero wrap">
+            <span class="pill">New · Edge functions are live</span>
+            <h1>Ship your product before lunch.</h1>
+            <p>Nimbus is the deployment platform that gets out of your way. Push to git, get a URL. Scale to millions without touching a config file.</p>
+            <div class="ctas"><a class="btn primary" href="#">Deploy now</a><a class="btn" href="#">Talk to sales</a></div>
+            <div class="shot"><img src="https://picsum.photos/seed/nimbus-dash/1600/800" alt="Dashboard"></div>
+        </div>
+
+        <div class="logos wrap"><span>ACME</span><span>GLOBEX</span><span>INITECH</span><span>UMBRELLA</span><span>HOOLI</span></div>
+
+        <section id="features">
+            <div class="wrap">
+                <h2>Everything you need. Nothing you don't.</h2>
+                <p class="lead">Built for teams who would rather write features than YAML.</p>
+                <div class="grid">
+                    <div class="card"><div class="ic"></div><h3>Instant previews</h3><p>Every pull request gets its own live URL, shareable with your whole team.</p></div>
+                    <div class="card"><div class="ic"></div><h3>Global edge</h3><p>Your code runs in 140 regions, a few milliseconds away from every user.</p></div>
+                    <div class="card"><div class="ic"></div><h3>Zero config</h3><p>We detect your framework and build it the right way, automatically.</p></div>
+                    <div class="card"><div class="ic"></div><h3>Observability</h3><p>Logs, traces and web vitals out of the box. No agents to install.</p></div>
+                    <div class="card"><div class="ic"></div><h3>Rollbacks</h3><p>One click to go back in time. Every deploy is immutable.</p></div>
+                    <div class="card"><div class="ic"></div><h3>Secure by default</h3><p>Automatic HTTPS, DDoS protection and SSO for every project.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="wrap split">
+                <img src="https://picsum.photos/seed/nimbus-team/900/700" alt="Team working">
+                <div>
+                    <h2>Collaboration that feels like magic.</h2>
+                    <p class="lead">Comment directly on previews, assign reviewers and merge with confidence.</p>
+                    <ul><li>Inline comments on any deploy</li><li>Slack and GitHub integrations</li><li>Role-based access control</li></ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="pricing" id="pricing">
+            <div class="wrap">
+                <h2>Simple pricing</h2>
+                <p class="lead">Start for free, upgrade when you grow.</p>
+                <div class="plans">
+                    <div class="plan"><h3>Hobby</h3><div class="price">$0</div><p>For side projects and experiments.</p><a class="btn" href="#">Get started</a></div>
+                    <div class="plan hot"><h3>Pro</h3><div class="price">$20</div><p>For professionals shipping every day.</p><a class="btn" href="#">Start trial</a></div>
+                    <div class="plan"><h3>Enterprise</h3><div class="price">Custom</div><p>For teams with advanced needs.</p><a class="btn" href="#">Contact us</a></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="wrap">
+                <h2>Ready to ship faster than ever?</h2>
+                <div class="ctas"><a class="btn primary" href="#">Create a free account</a></div>
+            </div>
+        </section>
+    </main>
+
+    <footer><div class="wrap"><span>© 2026 Nimbus Inc.</span><span>Privacy · Terms · Status</span></div></footer>
+
+    <!-- CursorSwarm: one script, one call -->
+    <script src="../../cursor-swarm.js"></script>
+    <script>
+        new CursorSwarm({
+            cursors: 3,
+            colors: ['#5b5bf7', '#ff5e8a', '#00c2a8'],
+            deconstruct: true,
+            copyPaste: 0.7      // cards and plans are often copy-pasted from a built sibling, then edited
+        }).init();
+    </script>
+</body>
+</html>

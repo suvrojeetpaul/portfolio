@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kaito Mori — Photography</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #0a0a0a; color: #eee; font-family: "Helvetica Neue", Arial, sans-serif; }
+        .hero { min-height: 92vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 6vw; }
+        .hero small { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: #888; }
+        .hero h1 { font-size: clamp(60px, 13vw, 200px); line-height: .85; font-weight: 900; letter-spacing: -.04em; text-transform: uppercase; margin-top: 18px; }
+        .hero p { max-width: 460px; color: #aaa; margin-top: 26px; font-size: 17px; line-height: 1.6; }
+        .gallery { columns: 3 280px; column-gap: 14px; padding: 0 6vw; }
+        .gallery figure { break-inside: avoid; margin-bottom: 14px; position: relative; }
+        .gallery img { width: 100%; display: block; }
+        .gallery figcaption { position: absolute; left: 12px; bottom: 12px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; background: rgba(0,0,0,.6); padding: 6px 10px; }
+        .about { display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; padding: 14vh 6vw; align-items: center; }
+        .about h2 { font-size: clamp(36px, 5vw, 72px); line-height: .95; text-transform: uppercase; letter-spacing: -.02em; }
+        .about p { color: #aaa; line-height: 1.7; font-size: 17px; margin-top: 18px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+        .tags span { border: 1px solid #333; padding: 8px 14px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
+        .contact { padding: 16vh 6vw; text-align: center; border-top: 1px solid #222; }
+        .contact a { font-size: clamp(32px, 7vw, 110px); font-weight: 900; text-transform: uppercase; letter-spacing: -.03em; color: #fff; text-decoration: none; }
+        @media (max-width: 800px) { .about { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <small>Tokyo · Lisbon · Reykjavík</small>
+        <h1>Kaito<br>Mori</h1>
+        <p>Documentary and landscape photographer chasing quiet light in loud places.</p>
+    </section>
+
+    <section class="gallery">
+        <figure><img src="https://picsum.photos/seed/km1/800/1000" alt=""><figcaption>Harbor, 05:12</figcaption></figure>
+        <figure><img src="https://picsum.photos/seed/km2/800/600" alt=""><figcaption>Fog line</figcaption></figure>
+        <figure><img src="https://picsum.photos/seed/km3/800/900" alt=""><figcaption>Neon rain</figcaption></figure>
+        <figure><img src="https://picsum.photos/seed/km4/800/1100" alt=""><figcaption>North road</figcaption></figure>
+        <figure><img src="https://picsum.photos/seed/km5/800/640" alt=""><figcaption>Tram 28</figcaption></figure>
+        <figure><img src="https://picsum.photos/seed/km6/800/800" alt=""><figcaption>Basalt</figcaption></figure>
+        <figure><img src="https://picsum.photos/seed/km7/800/1000" alt=""><figcaption>Night market</figcaption></figure>
+        <figure><img src="https://picsum.photos/seed/km8/800/560" alt=""><figcaption>Glacier mouth</figcaption></figure>
+        <figure><img src="https://picsum.photos/seed/km9/800/900" alt=""><figcaption>Rooftops</figcaption></figure>
+    </section>
+
+    <section class="about">
+        <img src="https://picsum.photos/seed/kaito-cam/900/1100" alt="" style="width:100%;display:block">
+        <div>
+            <h2>Light first. Story second.</h2>
+            <p>For ten years I have been travelling with one camera and two lenses, working for magazines, NGOs and the occasional stubborn client who wanted something real.</p>
+            <div class="tags"><span>Editorial</span><span>Landscape</span><span>Street</span><span>Film</span><span>Prints</span></div>
+        </div>
+    </section>
+
+    <section class="contact">
+        <a href="#">hello@kaitomori.photo</a>
+    </section>
+
+    <script src="../../cursor-swarm.js"></script>
+    <script>
+        // A big swarm of 6 agents that spawn at random places and work fast.
+        const swarm = new CursorSwarm({
+            cursors: 6,
+            startPosition: 'random',
+            speed: 1.3,
+            idle: 'hide',
+            relocation: 0.5,    // half the photos are dropped out of place and dragged into position
+            copyPaste: true
+        }).init();
+
+        swarm.on('done', () => console.log('Portfolio fully built!'));
+    </script>
+</body>
+</html>
