@@ -6,6 +6,9 @@
     <meta name="description" content="Suvrojeet Paul — cybersecurity intern, secure full-stack developer, and computer science researcher.">
     <meta name="theme-color" content="#070707">
     <title>Suvrojeet Paul — Secure systems, thoughtful software</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,700;6..96,900&family=Orbitron:wght@400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #070707;
@@ -27,10 +30,14 @@
             isolation: isolate;
             background: var(--bg);
             color: var(--fg);
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-family: 'Rajdhani', 'Trebuchet MS', sans-serif;
             line-height: 1.55;
             overflow-x: hidden;
         }
+        h1, h2, h3, .brand, nav, .button, .eyebrow, .skill-no, .project-top, .media-index, .timeline-label, .cert-number, footer {
+            font-family: 'Orbitron', 'Rajdhani', sans-serif;
+        }
+        h1, h2, h3 { font-weight: 700; }
         #aurora-bg {
             position: fixed;
             z-index: -4;
@@ -38,7 +45,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            opacity: .46;
+            opacity: .62;
         }
         body::before {
             position: fixed;
@@ -157,8 +164,12 @@
         nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 22px; color: var(--mute); font-size: 12px; }
         nav a { text-decoration: none; transition: color .2s ease; }
         nav a:hover { color: var(--accent); }
-        .hero { min-height: min(820px, calc(100vh - 68px)); display: grid; align-items: center; padding: 110px 0 100px; }
-        .hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr); gap: 80px; align-items: end; }
+        .hero { position: relative; min-height: min(820px, calc(100vh - 68px)); display: grid; align-items: center; padding: 110px 0 100px; overflow: hidden; }
+        .hero-grid { position: relative; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr); gap: 80px; align-items: end; }
+        .hero-grid > div:not(.hero-visual) { position: relative; z-index: 2; }
+        .hero-visual { position: absolute; z-index: 1; right: 1%; bottom: 40px; width: min(36vw, 460px); height: min(45vw, 575px); pointer-events: none; }
+        .hero-portrait { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; filter: saturate(.9) contrast(1.06) drop-shadow(0 24px 35px rgba(0,0,0,.4)); }
+        .hero-visual::after { position: absolute; inset: 20% 0 0; background: linear-gradient(90deg, var(--bg), transparent 30%), linear-gradient(0deg, var(--bg), transparent 24%); content: ""; pointer-events: none; }
         .hero-name { display: flex; align-items: center; gap: clamp(16px, 2.5vw, 34px); }
         .tech-wordmark { position: relative; width: min(100%, 900px); margin: 20px 0 26px; }
         .tech-wordmark canvas { display: block; width: 100%; height: clamp(78px, 11vw, 142px); }
@@ -170,9 +181,7 @@
             clip: rect(0 0 0 0);
             white-space: nowrap;
         }
-        .profile-photo { width: clamp(78px, 10vw, 132px); height: clamp(78px, 10vw, 132px); flex: 0 0 auto; border: 1px solid var(--accent); border-radius: 50%; object-fit: cover; object-position: 52% 28%; filter: saturate(.86) contrast(1.05); box-shadow: 10px 10px 0 rgba(255,94,0,.14); transition: transform .45s ease, filter .45s ease; }
-        .profile-photo:hover { filter: saturate(1.08) contrast(1.05); transform: translateY(-5px) rotate(2deg); }
-        .hero-copy { max-width: 620px; color: var(--mute); font-size: clamp(16px, 2vw, 20px); }
+        .hero-copy { position: relative; max-width: 620px; padding: 18px 22px 18px 0; color: var(--mute); font-size: clamp(17px, 2vw, 21px); font-weight: 500; letter-spacing: .02em; }
         .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
         .button {
             display: inline-flex;
@@ -190,7 +199,7 @@
         .button:hover { border-color: var(--accent); color: var(--accent); }
         .button.primary { border-color: var(--accent); background: var(--accent); color: #080808; font-weight: 800; }
         .button.primary:hover { background: transparent; color: var(--accent); }
-        .hero-meta { border-left: 1px solid var(--accent); padding-left: 22px; color: var(--mute); font-size: 12px; }
+        .hero-meta { border-left: 1px solid var(--accent); padding: 18px 18px 18px 22px; background: linear-gradient(90deg, rgba(7,7,7,.78), rgba(7,7,7,.18)); color: var(--mute); font-size: 12px; backdrop-filter: blur(5px); }
         .hero-meta strong { display: block; margin-bottom: 10px; color: var(--fg); font-size: 18px; }
         .hero-meta p + p { margin-top: 18px; }
         section { padding: 105px 0; border-top: 1px solid var(--line); }
@@ -341,7 +350,11 @@
             .wrap { width: min(var(--max), calc(100% - 32px)); }
             nav { display: none; }
             .hero { padding: 80px 0; }
-            .hero-name { align-items: flex-start; gap: 14px; }
+            .hero { min-height: 760px; }
+            .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+            .hero-visual { right: -18%; bottom: -100px; width: 92vw; height: 690px; opacity: .68; }
+            .hero-grid > div:not(.hero-visual) { max-width: 92%; }
+            .hero-meta { max-width: 420px; margin-left: auto; }
             .tech-wordmark canvas { height: 78px; }
             .profile-photo { width: 72px; height: 72px; margin-top: 20px; }
             section { padding: 76px 0; }
@@ -394,6 +407,9 @@
     <main id="top">
         <section class="hero" aria-labelledby="hero-title">
             <div class="wrap hero-grid">
+                <div class="hero-visual" aria-hidden="true">
+                    <canvas class="hero-portrait"></canvas>
+                </div>
                 <div>
                     <p class="eyebrow">01 / identity // cyber security // creative technology</p>
                     <div class="hero-name">
@@ -401,7 +417,6 @@
                             <canvas aria-hidden="true"></canvas>
                             <h1 id="hero-title">Suvrojeet Paul</h1>
                         </div>
-                        <img class="profile-photo" src="./media/suvrojeet-profile.jpg" alt="Portrait of Suvrojeet Paul" width="132" height="132">
                     </div>
                     <p class="hero-copy">Cybersecurity enthusiast, advanced graphic and web developer building scalable digital ecosystems where secure backend logic meets intuitive human experiences and polished visual communication.</p>
                     <div class="hero-actions">
@@ -688,6 +703,52 @@
             hudPosition: 'bottom-left'
         }).init();
 
+        const heroPortrait = document.querySelector('.hero-portrait');
+        if (heroPortrait) {
+            const source = new Image();
+            source.src = './media/suvrojeet-hero.png';
+            source.onload = () => {
+                const context = heroPortrait.getContext('2d', { willReadFrequently: true });
+                const width = source.naturalWidth;
+                const height = source.naturalHeight;
+                heroPortrait.width = width;
+                heroPortrait.height = height;
+                context.drawImage(source, 0, 0);
+                const image = context.getImageData(0, 0, width, height);
+                const pixels = image.data;
+                const visited = new Uint8Array(width * height);
+                const queue = new Int32Array(width * height);
+                let head = 0;
+                let tail = 0;
+                const enqueue = index => {
+                    if (index < 0 || index >= width * height || visited[index]) return;
+                    const offset = index * 4;
+                    if (pixels[offset] < 225 || pixels[offset + 1] < 225 || pixels[offset + 2] < 225) return;
+                    visited[index] = 1;
+                    queue[tail++] = index;
+                };
+                for (let x = 0; x < width; x++) {
+                    enqueue(x);
+                    enqueue((height - 1) * width + x);
+                }
+                for (let y = 0; y < height; y++) {
+                    enqueue(y * width);
+                    enqueue(y * width + width - 1);
+                }
+                while (head < tail) {
+                    const index = queue[head++];
+                    pixels[index * 4 + 3] = 0;
+                    const x = index % width;
+                    const y = Math.floor(index / width);
+                    if (x > 0) enqueue(index - 1);
+                    if (x < width - 1) enqueue(index + 1);
+                    if (y > 0) enqueue(index - width);
+                    if (y < height - 1) enqueue(index + width);
+                }
+                context.putImageData(image, 0, 0);
+            };
+        }
+
         const wordmark = document.querySelector('.tech-wordmark');
         const wordmarkCanvas = wordmark?.querySelector('canvas');
         if (wordmark && wordmarkCanvas) {
@@ -705,8 +766,8 @@
                 wordmarkCanvas.width = rect.width * dpr;
                 wordmarkCanvas.height = rect.height * dpr;
                 context.setTransform(dpr, 0, 0, dpr, 0, 0);
-                const size = Math.min(142, Math.max(52, rect.width / 7.5));
-                context.font = `800 ${size}px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace`;
+                const size = Math.min(118, Math.max(44, rect.width / 9.5));
+                context.font = `italic 900 ${size}px 'Bodoni Moda', Georgia, serif`;
                 context.textBaseline = 'middle';
                 context.letterSpacing = `${size * -.08}px`;
                 const total = letters.reduce((width, letter) => width + context.measureText(letter).width, 0);
@@ -727,8 +788,13 @@
                 bounds.forEach((item, index) => {
                     const distance = Math.abs(pointer.x - item.center);
                     const isActive = index === active && pointer.y >= 0 && pointer.y <= height;
-                    context.fillStyle = isActive ? 'transparent' : index > 8 ? '#d94a00' : '#ffffff';
-                    context.strokeStyle = '#3be8ff';
+                    const gradient = context.createLinearGradient(0, 0, rect.width, 0);
+                    gradient.addColorStop(0, '#ffb36b');
+                    gradient.addColorStop(.42, '#ff5e00');
+                    gradient.addColorStop(.72, '#c96cff');
+                    gradient.addColorStop(1, '#3be8ff');
+                    context.fillStyle = isActive ? 'transparent' : gradient;
+                    context.strokeStyle = gradient;
                     context.lineWidth = 1.5;
                     context.setLineDash(isActive ? [4, 3] : []);
                     if (!isActive) {
@@ -826,15 +892,25 @@
                     }
                     float sweep = uv.x * .72 + uTime * .018;
                     float ribbon = uv.y - (.48 + n * .17 + sin(uv.x * 2.7 + uTime * .08) * .08);
+                    float ribbon2 = uv.y - (.68 + n * .10 + sin(uv.x * 3.8 - uTime * .06) * .11);
+                    float ribbon3 = uv.y - (.29 - n * .08 + sin(uv.x * 4.6 + uTime * .05) * .07);
                     float glow = exp(-abs(ribbon) * (8.5 + n * 2.));
-                    float haze = exp(-abs(ribbon + .16) * 4.2) * .28;
+                    float glow2 = exp(-abs(ribbon2) * 11.5);
+                    float glow3 = exp(-abs(ribbon3) * 14.0);
+                    float haze = exp(-abs(ribbon + .16) * 4.2) * .32;
                     vec3 palette = cosinePalette(sweep + n * .18);
                     vec3 second = cosinePalette(sweep + .34 + n * .12);
+                    vec3 third = cosinePalette(sweep * .72 - .24 + n * .08);
                     float mouseGlow = exp(-distance(uv, center + vec2((uMouse.x - .5) * .6, (uMouse.y - .5) * .25)) * 2.8) * .16;
-                    vec3 result = palette * glow * .30 + second * haze * .20 + vec3(.05, .18, .24) * mouseGlow;
-                    result *= smoothstep(1.75, .15, abs(uv.x - center.x) * .6);
-                    float alpha = clamp(max(result.r, max(result.g, result.b)) * .48, 0., .38);
-                    color = vec4(result * .72, alpha);
+                    vec3 result = palette * glow * .42 + second * glow2 * .26 + third * glow3 * .18 + second * haze * .24 + vec3(.05, .18, .24) * mouseGlow;
+                    result *= smoothstep(1.75, .08, abs(uv.x - center.x) * .6);
+                    result += .018 * vec3(
+                        sin(uv.x * 18. + uTime * .12),
+                        sin(uv.x * 13. - uTime * .09 + 2.),
+                        sin(uv.x * 22. + uTime * .07 + 4.)
+                    );
+                    float alpha = clamp(max(result.r, max(result.g, result.b)) * .62, 0., .52);
+                    color = vec4(result * .9, alpha);
                 }`;
             const compileShader = (type, source) => {
                 const shader = auroraGl.createShader(type);
